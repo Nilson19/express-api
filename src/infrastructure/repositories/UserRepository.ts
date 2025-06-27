@@ -29,7 +29,6 @@ export class UserRepository implements IUserRepository {
       );
 
       const userRow = (rows as any[])[0];
-      console.log('User found:', userRow);
       if (!userRow) return null;
 
       // Buscar direcciones relacionadas
@@ -37,8 +36,6 @@ export class UserRepository implements IUserRepository {
         `SELECT * FROM addresses WHERE userId = ?`,
         [userRow.id]
       );
-
-        console.log('Addresses found:', addressRows);
 
       return {
         id: userRow.id,
