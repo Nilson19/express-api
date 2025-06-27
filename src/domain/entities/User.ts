@@ -11,4 +11,5 @@ export interface User {
   createdAt?: Date;
   updatedAt?: Date;
   isActive?: boolean;
+  token?: string;
 }

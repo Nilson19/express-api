@@ -2,6 +2,7 @@ import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { IAddressRepository } from "../../domain/repositories/IAddressRepository";
 import { ConflictError, ValidationError } from '../../utils/errors/AppError';
+import ValidationUtils from '../../utils/validation';
 
 export class RegisterUser {
   constructor(
@@ -18,6 +19,8 @@ export class RegisterUser {
     if (!data.addresses || data.addresses.length === 0) {
       throw new ValidationError("Debe proporcionar al menos una dirección.");
     }
+
+    data.password = await ValidationUtils.hashPassword(data.password);
 
     // Crear el usuario
     const userId = await this.userRepository.register(data);
