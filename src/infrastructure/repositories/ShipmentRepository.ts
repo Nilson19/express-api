@@ -1,3 +1,4 @@
+import { ResultSetHeader } from "mysql2";
 import { IShipmentRepository } from "../../domain/repositories/IShipmenRepository";
 import { Shipment } from "../../domain/entities/Shipment";
 import { mysqlPool } from "../../config/dbConnection";
@@ -25,6 +26,26 @@ export class ShipmentRepository implements IShipmentRepository {
         throw new AppError("Error creating shipment: " + error.message);
       }
       throw new AppError("Unknown error creating shipment");
+    }
+  }
+
+  async updateShipment(shipmentId: string, status: string): Promise<boolean> {
+    try {
+      const [result] = await mysqlPool.execute<ResultSetHeader>(
+        `UPDATE shipments SET status = ? WHERE id = ?`,
+        [status, shipmentId]
+      );
+
+      if (result.affectedRows === 0) {
+        return false; // No se actualizó nada
+      }
+
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new AppError("Error updating shipment: " + error.message);
+      }
+      throw new AppError("Unknown error updating shipment");
     }
   }
 }
