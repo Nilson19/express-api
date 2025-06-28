@@ -6,7 +6,7 @@ export class CreateShipment {
 
   async execute(data: Shipment): Promise<void> {
     // Validar los datos de entrada
-    if (!data.originZip || !data.destinationZip || !data.weight) {
+    if (!data.origin_zip || !data.destination_zip || !data.weight) {
       throw new Error("Datos de envío incompletos");
     }
 

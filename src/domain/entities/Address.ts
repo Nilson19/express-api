@@ -3,7 +3,7 @@ export interface Address {
   street: string;
   city: string;
   state: string;
-  zipCode: string;
+  zip_code: string;
   country: string;
-  isDefault?: boolean;
+  is_default?: boolean;
 }

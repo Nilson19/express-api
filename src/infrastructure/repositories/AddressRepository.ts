@@ -7,16 +7,16 @@ export class AddressRepository implements IAddressRepository {
   async addAddress(userId: string, address: Address): Promise<void> {
     try {
       await mysqlPool.execute(
-        `INSERT INTO addresses (userId, street, city, state, zipCode, country, isDefault)
+        `INSERT INTO addresses (user_id, street, city, state, zip_code, country, is_default)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           userId,
           address.street,
           address.city,
           address.state,
-          address.zipCode,
+          address.zip_code,
           address.country,
-          address.isDefault ?? false,
+          address.is_default ?? false,
         ]
       );
     } catch (error: unknown) {
