@@ -1,6 +1,7 @@
-import { IAddressRepository } from '../../domain/repositories/IAddressRepository';
-import { Address } from '../../domain/entities/Address';
-import { mysqlPool } from '../../config/dbConnection';
+import { IAddressRepository } from "../../domain/repositories/IAddressRepository";
+import { Address } from "../../domain/entities/Address";
+import { mysqlPool } from "../../config/dbConnection";
+import { AppError } from "../../utils/errors/AppError";
 
 export class AddressRepository implements IAddressRepository {
   async addAddress(userId: string, address: Address): Promise<void> {
@@ -18,8 +19,11 @@ export class AddressRepository implements IAddressRepository {
           address.isDefault ?? false,
         ]
       );
-    } catch (error: any) {
-      throw new Error('Error al registrar la dirección: ' + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new AppError("Error al registrar la dirección: " + error.message);
+      }
+      throw new Error("Error desconocido al registrar la dirección");
     }
   }
 }

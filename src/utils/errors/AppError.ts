@@ -1,7 +1,7 @@
 import { HttpError } from './HttpError';
 
 export class AppError extends HttpError {
-  constructor(message: string, statusCode = 400, name = "AppError") {
+  constructor(message: string, statusCode = 500, name = "AppError") {
     super(message, statusCode, name);
     Error.captureStackTrace(this, this.constructor);
   }
