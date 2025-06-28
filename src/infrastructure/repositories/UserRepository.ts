@@ -1,6 +1,9 @@
-import { IUserRepository } from '../../domain/repositories/IUserRepository';
-import { User } from '../../domain/entities/User';
-import { mysqlPool } from '../../config/dbConnection';
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { User } from "../../domain/entities/User";
+import { Address } from "../../domain/entities/Address";
+import { mysqlPool } from "../../config/dbConnection";
+import { ResultSetHeader } from "mysql2";
+import { AppError } from "../../utils/errors/AppError";
 
 export class UserRepository implements IUserRepository {
   async register(user: User): Promise<string> {
@@ -13,11 +16,13 @@ export class UserRepository implements IUserRepository {
         [user.name, user.lastName, user.email, user.password, user.phone, true]
       );
 
-      const userId = (result as any).insertId;
+      const userId = (result as ResultSetHeader).insertId;
       return userId.toString();
-
-    } catch (error: any) {
-      throw new Error('Error al registrar usuario: ' + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new AppError("Error al registrar usuario: " + error.message);
+      }
+      throw new AppError("Error desconocido al registrar usuario");
     }
   }
 
@@ -28,7 +33,7 @@ export class UserRepository implements IUserRepository {
         [email]
       );
 
-      const userRow = (rows as any[])[0];
+      const userRow = (rows as User[])[0];
       if (!userRow) return null;
 
       // Buscar direcciones relacionadas
@@ -47,10 +52,15 @@ export class UserRepository implements IUserRepository {
         isActive: userRow.isActive,
         createdAt: userRow.createdAt,
         updatedAt: userRow.updatedAt,
-        addresses: addressRows as any[],
+        addresses: addressRows as Address[],
       };
-    } catch (error: any) {
-      throw new Error('Error al buscar el usuario por email: ' + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new AppError(
+          "Error al buscar el usuario por email: " + error.message
+        );
+      }
+      throw new AppError("Error desconocido al buscar el usuario por email");
     }
   }
 }
