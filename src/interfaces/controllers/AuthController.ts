@@ -11,7 +11,7 @@ export class AuthController {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await this.registerUser.execute(req.body);
-      res.status(201).json(user);
+      res.status(201).json({ message: "User registered successfully", data: user });
     } catch (err) {
       next(err);
     }
@@ -20,7 +20,7 @@ export class AuthController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.loginUser.execute(req.body);
-      res.status(200).json({ message: result });
+      res.status(200).json({ message: "Login successful", data: result });
     } catch (err) {
       next(err);
     }

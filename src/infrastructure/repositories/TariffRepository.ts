@@ -11,7 +11,7 @@ export class TariffRepository implements ITariffRepository {
   ): Promise<string | null> {
     try {
       const [rows] = await mysqlPool.execute(
-        `SELECT * FROM tariffs WHERE originZip = ? AND destinationZip = ? AND minWeight <= ? AND maxWeight >= ?`,
+        `SELECT * FROM tariffs WHERE origin_zip = ? AND destination_zip = ? AND min_weight <= ? AND max_weight >= ?`,
         [originZip, destinationZip, weight, weight]
       );
 

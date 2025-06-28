@@ -7,16 +7,16 @@ export class ShipmentRepository implements IShipmentRepository {
   async createShipment(shipment: Shipment): Promise<void> {
     try {
       await mysqlPool.execute(
-        `INSERT INTO shipments (originZip, destinationZip, weight, length, width, height, totalCost, status)
+        `INSERT INTO shipments (origin_zip, destination_zip, weight, length, width, height, total_cost, status)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
-          shipment.originZip,
-          shipment.destinationZip,
+          shipment.origin_zip,
+          shipment.destination_zip,
           shipment.weight,
           shipment.length,
           shipment.width,
           shipment.height,
-          shipment.totalCost,
+          shipment.total_cost,
           shipment.status || "pending", // Default status if not provided
         ]
       );

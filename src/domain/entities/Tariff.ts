@@ -1,7 +1,7 @@
 export interface Tariff {
-  originZip: string;
-  destinationZip: string;
-  minWeight: number;
-  maxWeight: number;
+  origin_zip: string;
+  destination_zip: string;
+  min_weight: number;
+  max_weight: number;
   cost: number;
 }

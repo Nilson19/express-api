@@ -1,12 +1,12 @@
 export interface Shipment {
-  originZip: string;
-  destinationZip: string;
+  origin_zip: string;
+  destination_zip: string;
   weight: number;           
   length: number;           
   width: number;
   height: number;          
-  totalCost: number;
-  createdAt?: Date;        
-  updatedAt?: Date;        
+  total_cost: number;
+  created_at?: Date;        
+  updated_at?: Date;        
   status?: string;       
 }

@@ -2,7 +2,7 @@ import { AddressDTO } from './AddressDTO';
 
 export interface UserDTO {
   name: string;
-  lastName: string;
+  last_name: string;
   email: string;
   phone: string;
   addresses?: AddressDTO[];

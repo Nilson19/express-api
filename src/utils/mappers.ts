@@ -11,9 +11,9 @@ export function toAddressDTO(address: Address): AddressDTO {
     street: address.street,
     city: address.city,
     state: address.state,
-    zipCode: address.zipCode,
+    zip_code: address.zip_code,
     country: address.country,
-    isDefault: address.isDefault ?? false,
+    is_default: address.is_default ?? false,
   };
 }
 
@@ -30,7 +30,7 @@ export function toAddressDTOArray(addresses: Address[] = []): AddressDTO[] {
 export function toUserDTO(user: User): UserDTO {
   return {
     name: user.name,
-    lastName: user.lastName,
+    last_name: user.last_name,
     email: user.email,
     phone: user.phone,
     addresses: user.addresses ? toAddressDTOArray(user.addresses) : [],

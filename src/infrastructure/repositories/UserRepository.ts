@@ -11,9 +11,9 @@ export class UserRepository implements IUserRepository {
     try {
       // Insertar usuario
       const [result] = await connection.execute(
-        `INSERT INTO users (name, lastName, email, password, phone, isActive)
+        `INSERT INTO users (name, last_name, email, password, phone, is_active)
          VALUES (?, ?, ?, ?, ?, ?)`,
-        [user.name, user.lastName, user.email, user.password, user.phone, true]
+        [user.name, user.last_name, user.email, user.password, user.phone, true]
       );
 
       const userId = (result as ResultSetHeader).insertId;
@@ -38,20 +38,20 @@ export class UserRepository implements IUserRepository {
 
       // Buscar direcciones relacionadas
       const [addressRows] = await mysqlPool.execute(
-        `SELECT * FROM addresses WHERE userId = ?`,
+        `SELECT * FROM addresses WHERE user_id = ?`,
         [userRow.id]
       );
 
       return {
         id: userRow.id,
         name: userRow.name,
-        lastName: userRow.lastName,
+        last_name: userRow.last_name,
         email: userRow.email,
         password: userRow.password,
         phone: userRow.phone,
-        isActive: userRow.isActive,
-        createdAt: userRow.createdAt,
-        updatedAt: userRow.updatedAt,
+        is_active: userRow.is_active,
+        created_at: userRow.created_at,
+        updated_at: userRow.updated_at,
         addresses: addressRows as Address[],
       };
     } catch (error: unknown) {
