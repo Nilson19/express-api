@@ -88,7 +88,6 @@ describe("🧪 Shipment Endpoints (E2E)", () => {
     const res = await request(app)
       .get("/api/v1/shipments")
       .set("Authorization", `Bearer ${token}`)
-      .send({ userId: "1" });
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Shipments retrieved successfully");

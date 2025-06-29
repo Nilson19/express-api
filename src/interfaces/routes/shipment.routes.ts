@@ -146,17 +146,9 @@ router.patch("/update/:id", passport.authenticate('jwt', { session: false }), (r
  *     summary: Obtiene los envíos del usuario autenticado
  *     security:
  *       - bearerAuth: []
- *     tags: [Shipments]
- *    requestBody:
- *      required: true
- *     content:
- *        application/json:
- *         schema:
- *          type: object
- *         properties:
- *          userId:
- *           type: string
- * *     description: ID del usuario para obtener sus envíos
+ *     tags:
+ *       - Shipments
+ *     description: Obtiene los envíos asociados al usuario autenticado mediante el JWT
  *     responses:
  *       200:
  *         description: Envíos obtenidos exitosamente

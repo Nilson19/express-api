@@ -4,6 +4,7 @@ import { CreateShipment } from "../../application/usecases/CreateShipment";
 import { UpdateShipment } from "../../application/usecases/UpdateShipment";
 import { GetShipment } from "../../application/usecases/GetShipments";
 import { ShipmentQuote } from "../../application/usecases/ShipmentQuote";
+import { User } from "../../domain/entities/User";
 
 export class ShipmentController {
   constructor(
@@ -89,8 +90,13 @@ export class ShipmentController {
 
   async getShipments(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.body.userId;
-      const shipments = await this.getShipment.execute(userId);
+      // Verificar que req.user existe y tiene la propiedad id
+      const userId = (req.user as User)?.id;
+      if (!userId) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+      const shipments = await this.getShipment.execute(userId.toString());
       res.status(200).json({ message: "Shipments retrieved successfully", data: shipments });
     } catch (err) {
       next(err);
