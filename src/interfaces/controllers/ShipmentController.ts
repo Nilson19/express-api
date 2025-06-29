@@ -2,12 +2,15 @@ import { Request, Response, NextFunction } from "express";
 import { redisClient } from "../../config/redis";
 import { CreateShipment } from "../../application/usecases/CreateShipment";
 import { UpdateShipment } from "../../application/usecases/UpdateShipment";
+import { GetShipment } from "../../application/usecases/GetShipments";
 import { ShipmentQuote } from "../../application/usecases/ShipmentQuote";
+import { User } from "../../domain/entities/User";
 
 export class ShipmentController {
   constructor(
     private readonly createShipment: CreateShipment,
     private readonly updateShipment: UpdateShipment,
+    private readonly getShipment: GetShipment,
     private readonly shipmentQuote: ShipmentQuote
   ) {}
 
@@ -80,6 +83,21 @@ export class ShipmentController {
       req.app.get("io").emit("shipmentStatusUpdate", { id, status });
 
       res.status(200).json({ message: "Estado actualizado correctamente" });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getShipments(req: Request, res: Response, next: NextFunction) {
+    try {
+      // Verificar que req.user existe y tiene la propiedad id
+      const userId = (req.user as User)?.id;
+      if (!userId) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+      const shipments = await this.getShipment.execute(userId.toString());
+      res.status(200).json({ message: "Shipments retrieved successfully", data: shipments });
     } catch (err) {
       next(err);
     }

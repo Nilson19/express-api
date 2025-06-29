@@ -1,4 +1,5 @@
 export interface Shipment {
+  user_id: string;
   origin_zip: string;
   destination_zip: string;
   weight: number;           
