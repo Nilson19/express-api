@@ -15,6 +15,7 @@ describe("CreateShipment", () => {
 
     it("should throw an error if origin_zip is missing", async () => {
         const data = {
+            user_id: "12345",
             origin_zip: "",
             destination_zip: "12345",
             weight: 10,
@@ -26,6 +27,7 @@ describe("CreateShipment", () => {
 
     it("should throw an error if destination_zip is missing", async () => {
         const data = {
+            user_id: "12345",
             origin_zip: "54321",
             destination_zip: "",
             weight: 10,
@@ -37,6 +39,7 @@ describe("CreateShipment", () => {
 
     it("should throw an error if weight is missing", async () => {
         const data = {
+            user_id: "12345",
             origin_zip: "54321",
             destination_zip: "12345",
             weight: 0,
@@ -48,6 +51,7 @@ describe("CreateShipment", () => {
 
     it("should call shipmentRepository.createShipment with valid data", async () => {
         const data = {
+            user_id: "12345",
             origin_zip: "54321",
             destination_zip: "12345",
             weight: 10,

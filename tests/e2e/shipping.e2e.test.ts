@@ -30,6 +30,7 @@ describe("🧪 Shipment Endpoints (E2E)", () => {
       .post("/api/v1/shipments/create")
       .set("Authorization", `Bearer ${token}`)
       .send({
+        user_id: "1",
         origin_zip: "110111",
         destination_zip: "050021",
         weight: 5,
@@ -81,5 +82,17 @@ describe("🧪 Shipment Endpoints (E2E)", () => {
 
     expect(res.status).toBe(404);
     expect(res.body.message).toBe("Shipment not found or update failed");
+  });
+
+  it("GET /api/v1/shipments → debería devolver los envíos del usuario", async () => {
+    const res = await request(app)
+      .get("/api/v1/shipments")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ userId: "1" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe("Shipments retrieved successfully");
+    expect(Array.isArray(res.body.data)).toBe(true);
+    expect(res.body.data.length).toBeGreaterThan(0);
   });
 });

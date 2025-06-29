@@ -45,6 +45,7 @@ import mysql from "mysql2/promise";
 
     CREATE TABLE IF NOT EXISTS shipments (
       id INT NOT NULL AUTO_INCREMENT,
+      user_id INT NOT NULL,
       origin_zip VARCHAR(20) NOT NULL,
       destination_zip VARCHAR(20) NOT NULL,
       weight DECIMAL(10,2) NOT NULL,
@@ -93,25 +94,41 @@ import mysql from "mysql2/promise";
     END;
 
     -- inserts
-
-  INSERT INTO tariffs (origin_zip, destination_zip, min_weight, max_weight, cost)
-  VALUES 
+    
+    
+    INSERT INTO tariffs (origin_zip, destination_zip, min_weight, max_weight, cost)
+    VALUES 
     ('110111', '050021', 0, 5, 8000),
     ('110111', '050021', 5.01, 10, 12000),
     ('110111', '050021', 10.01, 20, 18000),
     ('110111', '760001', 0, 5, 9000),
     ('110111', '760001', 5.01, 10, 13000),
     ('050021', '110111', 0, 5, 8500);
-
-  INSERT INTO users (email, password, name, last_name, phone)
-  VALUES (
-    'user1@example.com',
-    '$2b$10$2efmPcFZ83ZiQQGarZ41ReDnWBv0nYdFdUkMpk6AX73OgOhpLhBRC',
-    'E2E',
-    'Tester',
-    '0000000000'
-  );
-
+    
+    INSERT INTO users (email, password, name, last_name, phone)
+    VALUES (
+      'user1@example.com',
+      '$2b$10$2efmPcFZ83ZiQQGarZ41ReDnWBv0nYdFdUkMpk6AX73OgOhpLhBRC',
+      'E2E',
+      'Tester',
+      '0000000000'
+      );
+      
+      
+        INSERT INTO shipments (user_id, origin_zip, destination_zip, weight, length, width, height, total_cost, status)
+        VALUES
+          (
+          1,               
+          '11001',         
+          '22002',         
+          3.5,             
+          20.0,            
+          15.0,           
+          10.0,           
+          150.00,         
+          'pending'       
+        );
+        
   INSERT INTO addresses (user_id, street, city, state, zip_code, country, is_default)
   VALUES (1, 'Calle Falsa 123', 'Bogotá', 'Cundinamarca', '110111', 'Colombia', true);  
     `;
