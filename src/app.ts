@@ -2,10 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import passport from "passport";
 import { setupSwagger } from './config/swagger';
+import { configurePassport }  from "./config/passport";
+import { connectRedis } from './config/redis';
 import { errorHandler } from './middlewares/ErrorHandler';
 import authRoutes from './interfaces/routes/auth.routes';
 import shipmentRoutes from './interfaces/routes/shipment.routes';
-import { configurePassport }  from "./config/passport";
 import { UserRepository } from './infrastructure/repositories/UserRepository';
 import { AppError } from './utils/errors/AppError';
 
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 configurePassport(passport, userRepository);
+connectRedis();
 
 setupSwagger(app);
 

@@ -1,12 +1,14 @@
 import request from "supertest";
 import { app } from "../../src/app";
 import { mysqlPool } from "../../src/config/dbConnection";
+import { redisClient } from "../../src/config/redis";
 
 describe("🧪 Auth Endpoints (E2E)", () => {
 
   afterAll(async () => {
     // Aquí podrías limpiar la base de datos o cerrar conexiones si es necesario
     await mysqlPool.end();
+    await redisClient.quit();
   });
 
   it("POST /api/v1/auth/register → debería registrar un nuevo usuario", async () => {
