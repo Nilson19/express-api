@@ -1,4 +1,4 @@
-// src/config/passport.ts
+import { env } from "./env";
 import { PassportStatic } from "passport";
 import {
   Strategy as JwtStrategy,
@@ -6,7 +6,6 @@ import {
   StrategyOptions,
 } from "passport-jwt";
 import { JwtPayload } from "jsonwebtoken";
-import { env } from "./env";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 import { User } from "../domain/entities/User";
 

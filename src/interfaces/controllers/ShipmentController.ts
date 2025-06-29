@@ -13,7 +13,7 @@ export class ShipmentController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const shipment = await this.createShipment.execute(req.body);
-      res.status(201).json({ message: "Shipment created successfully", data: shipment });
+      res.status(201).json({ message: "Shipment created successfully", data: { shipment_id: shipment} });
     } catch (err) {
       next(err);
     }

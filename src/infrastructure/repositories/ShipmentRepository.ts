@@ -5,9 +5,9 @@ import { mysqlPool } from "../../config/dbConnection";
 import { AppError } from "../../utils/errors/AppError";
 
 export class ShipmentRepository implements IShipmentRepository {
-  async createShipment(shipment: Shipment): Promise<void> {
+  async createShipment(shipment: Shipment): Promise<string> {
     try {
-      await mysqlPool.execute(
+      const [result] = await mysqlPool.execute<ResultSetHeader>(
         `INSERT INTO shipments (origin_zip, destination_zip, weight, length, width, height, total_cost, status)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
@@ -21,6 +21,8 @@ export class ShipmentRepository implements IShipmentRepository {
           shipment.status || "pending", // Default status if not provided
         ]
       );
+
+      return result.insertId.toString(); // Devuelve el ID del nuevo envío como string
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new AppError("Error creating shipment: " + error.message);
