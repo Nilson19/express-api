@@ -5,11 +5,13 @@
   "scripts": {
     "test": "jest --config jest.config.js --testPathIgnorePatterns='e2e'",
     "test:coverage": "jest --config jest.config.js --testPathIgnorePatterns='e2e' --coverage",
-    "test:e2e": "npm run db:test:setup && npm run db:test:wait && npm run db:test:migrate && jest --testPathPatterns=e2e --detectOpenHandles && npm run db:test:teardown",
+    "test:e2e": "npm run db:test:setup && npm run db:test:setup:redis && npm run db:test:wait && npm run db:test:migrate && jest --testPathPatterns=e2e --detectOpenHandles && npm run db:test:teardown && npm run db:test:teardown:redis",
     "db:test:setup": "docker rm -f test-mysql || true && docker run -d --name test-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=delivery_db_test -p 3307:3306 mysql:latest",
     "db:test:teardown": "docker stop test-mysql && docker rm test-mysql",
     "db:test:migrate": "cross-env NODE_ENV=test ts-node src/config/migration.ts",
     "db:test:wait": "until docker exec test-mysql mysql -hlocalhost -uroot -proot -e 'SELECT 1' >/dev/null 2>&1; do echo '⏳ Esperando MySQL...'; sleep 1; done",
+    "db:test:setup:redis": "docker rm -f test-redis || true && docker run -d --name test-redis -p 6380:6379 redis:latest",
+    "db:test:teardown:redis": "docker stop test-redis && docker rm test-redis",
     "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
     "build": "tsc",
     "start": "node dist/main.js"
@@ -28,6 +30,7 @@
     "mysql2": "^3.14.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "redis": "^5.5.6",
     "socket.io": "^4.8.1",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",

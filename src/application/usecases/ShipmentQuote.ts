@@ -6,16 +6,25 @@ export class ShipmentQuote {
   async getShipmentQuote(
     originZip: string,
     destinationZip: string,
-    weight: number
+    weight: number,
+    length?: number,
+    width?: number,
+    height?: number
   ): Promise<string | null> {
-    if (!originZip || !destinationZip || weight <= 0) {
+    if (!originZip || !destinationZip || weight <= 0 || !length || !width || !height) {
       throw new Error("Invalid input parameters for shipment quote.");
     }
+
+
+    let maxWeight = height * width * length / 2500;
+    maxWeight = Math.max(maxWeight, weight);
+
+
 
     const cost = await this.tariffRepository.getTariff(
       originZip,
       destinationZip,
-      weight
+      Math.ceil(maxWeight),
     );
 
     if (!cost) {

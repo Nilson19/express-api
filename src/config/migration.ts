@@ -55,7 +55,8 @@ import mysql from "mysql2/promise";
       status VARCHAR(20) NOT NULL DEFAULT 'pending',
       created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (id)
+      PRIMARY KEY (id),
+      CONSTRAINT fk_shipments_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS tariffs (

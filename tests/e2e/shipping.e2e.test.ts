@@ -1,6 +1,7 @@
 import request from "supertest";
 import { app } from "../../src/app";
 import { mysqlPool } from "../../src/config/dbConnection";
+import { redisClient } from "../../src/config/redis";
 
 describe("🧪 Shipment Endpoints (E2E)", () => {
   let createdShipmentId: string;
@@ -21,6 +22,7 @@ describe("🧪 Shipment Endpoints (E2E)", () => {
   afterAll(async () => {
     // Aquí podrías limpiar la base de datos o cerrar conexiones si es necesario
     await mysqlPool.end();
+    await redisClient.quit();
   });
 
   it("POST /api/v1/shipments → debería crear un nuevo envío", async () => {
@@ -52,6 +54,9 @@ describe("🧪 Shipment Endpoints (E2E)", () => {
         originZip: "110111",
         destinationZip: "050021",
         weight: 10,
+        length: 40,
+        width: 30,
+        height: 20,
       });
 
     expect(res.status).toBe(200);
