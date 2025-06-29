@@ -1,5 +1,9 @@
 import dotenv from 'dotenv';
-dotenv.config();
+
+// Detecta el entorno y carga el archivo .env correspondiente
+dotenv.config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+});
 
 export const env = {
   port: process.env.PORT || 3000,

@@ -1,7 +1,7 @@
+import { env } from './config/env';
 import http from 'http';
 import { Server } from 'socket.io';
 import { app } from './app';
-import { env } from './config/env';
 
 const PORT = env.port;
 
@@ -30,6 +30,12 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+export function start() {
+  server.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
+}
+
+if (require.main === module) {
+  start();
+}
