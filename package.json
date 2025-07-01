@@ -14,7 +14,8 @@
     "db:test:teardown:redis": "docker stop test-redis && docker rm test-redis",
     "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
     "build": "tsc",
-    "start": "node dist/main.js"
+    "start": "npm run build && node dist/main.js"
+
   },
   "keywords": [],
   "author": "",
