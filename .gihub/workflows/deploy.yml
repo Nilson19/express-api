@@ -1,0 +1,54 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Unit Tests
+        run: npm run test:coverage
+
+      - name: Start MySQL and Redis for E2E tests
+        run: |
+          docker run -d --name test-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=delivery_db_test -p 3307:3306 mysql:latest
+          docker run -d --name test-redis -p 6380:6379 redis:latest
+
+      - name: Wait for MySQL to be ready
+        run: |
+          until docker exec test-mysql mysql -uroot -proot -e "SELECT 1"; do
+            echo "⏳ Waiting for MySQL...";
+            sleep 2;
+          done
+
+      - name: Run E2E Tests
+        run: npm run test:e2e
+
+      - name: Stop Docker Containers
+        if: always()
+        run: |
+          docker stop test-mysql test-redis
+          docker rm test-mysql test-redis
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Deploy to Railway
+        uses: railwayapp/railway-action@v1
+        with:
+          railwayToken: ${{ secrets.RAILWAY_TOKEN }}
