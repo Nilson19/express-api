@@ -39,12 +39,6 @@ jobs:
       - name: Run E2E Tests
         run: npm run test:e2e
 
-      - name: Stop Docker Containers
-        if: always()
-        run: |
-          docker stop test-mysql test-redis
-          docker rm test-mysql test-redis
-
       - name: Build Project
         run: npm run build
 
