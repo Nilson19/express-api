@@ -15,8 +15,9 @@ export class ShipmentController {
   ) {}
 
   async create(req: Request, res: Response, next: NextFunction) {
+     const userId = (req.user as User)?.id;
     try {
-      const shipment = await this.createShipment.execute(req.body);
+      const shipment = await this.createShipment.execute({...req.body, user_id: userId});
       res
         .status(201)
         .json({
