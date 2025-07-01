@@ -18,7 +18,7 @@ export class ShipmentRepository implements IShipmentRepository {
           shipment.length,
           shipment.width,
           shipment.height,
-          shipment.total_cost,
+          Number(shipment.total_cost),
           shipment.status || "pending", // Default status if not provided
         ]
       );
